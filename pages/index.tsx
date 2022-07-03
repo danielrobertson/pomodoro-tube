@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/future/image";
+import YouTube, { YouTubeProps } from "react-youtube";
 
 import { YouTubeSearchResults } from "youtube-search";
 
@@ -22,8 +23,6 @@ const Home: NextPage = () => {
   );
 
   const debouncedSearchValue = useDebounce(searchValue, DEBOUNCE_TIMEOUT);
-  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setSearchValue(e.target.value);
 
   useEffect(() => {
     // Fetch YouTube search results
@@ -37,8 +36,9 @@ const Home: NextPage = () => {
       );
 
       if (!youtubeResponse.ok) {
-        throw new Error(`Error: ${youtubeResponse.status}`);
+        console.error(`YouTube API error: ${youtubeResponse.status}`);
       }
+
       const youtubeResults = await youtubeResponse.json();
       setYoutubeResults(youtubeResults);
     };
@@ -54,14 +54,19 @@ const Home: NextPage = () => {
     };
   }, [debouncedSearchValue]);
 
-  const handleYoutubeResultClick = (
-    youtubeSearchResult: YouTubeSearchResults
-  ) => {
-    setCurrentVideo(youtubeSearchResult);
+  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setSearchValue(e.target.value);
+
+  const handleYoutubeResultClick = (video: YouTubeSearchResults) => {
+    // TODO retain search history results for quick switches?
+    setCurrentVideo(video);
     setSearchValue("");
     setYoutubeResults([]);
+  };
 
-    // TODO retain search history results for quick switches?
+  const onPlayerReady: YouTubeProps["onReady"] = (event) => {
+    // access to player in all event handlers via event.target
+    event.target.pauseVideo();
   };
 
   return (
@@ -72,14 +77,17 @@ const Home: NextPage = () => {
       </Head>
 
       <main className="flex w-full flex-1 flex-col items-center text-center">
-        <h1 className="text-6xl font-bold pt-14">PomodoroTube</h1>
+        <h1 className="container text-5xl md:text-6xl font-bold pt-14">
+          PomodoroTube
+        </h1>
 
-        <p className="mt-3 text-xl">
+        <p className="container mt-3 text-xl">
           Customized your Pomodoro soundtrack with YouTube videos
         </p>
 
-        <div className="container my-6 flex items-stretch justify-center">
-          <div className="w-full mt-6 mr-2 rounded-xl border p-6 text-left flex flex-col justify-center">
+        <div className="container p-2 my-6 flex flex-col md:flex-row items-stretch justify-center">
+          {/* Pomodoro panel */}
+          <div className="w-full mt-6 md:mr-2 rounded-xl border p-6 text-left flex flex-col justify-between">
             <div className="flex gap-3 justify-center flex-wrap">
               <div className="text-lg font-semibold bg-gray-200 px-2 rounded-md">
                 Pomodoro
@@ -93,7 +101,8 @@ const Home: NextPage = () => {
             </button>
           </div>
 
-          <div className="w-full h-96 mt-6 ml-2 rounded-xl border p-6 text-left flex flex-col">
+          {/* Search panel */}
+          <div className="w-full h-96 mt-6 md:ml-2 rounded-xl border p-6 text-left flex flex-col">
             <div className="mt-1 relative rounded-md shadow-sm">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <Search className="h-5 w-5 fill-gray-500" />
@@ -109,16 +118,20 @@ const Home: NextPage = () => {
             <div className="mt-3 overflow-y-scroll">
               {youtubeResults.map((result) => (
                 <div
-                  className="flex items-center mb-3 rounded border border-gray-200 overflow-hidden shadow-sm cursor-pointer"
+                  className="flex items-center mb-3 mr-3 rounded border border-gray-200 overflow-hidden shadow-sm cursor-pointer"
                   id={result.id}
                   onClick={() => handleYoutubeResultClick(result)}
                 >
                   <Image
                     className="flex-shrink-0"
-                    src={result?.thumbnails?.default?.url}
+                    src={
+                      result?.thumbnails?.default?.url ||
+                      "./thumnail-default.png"
+                    }
                     alt="YouTube video thumbnail"
                     width={70}
                     height={50}
+                    // TODO implement loading blur
                   />
                   <div className="ml-3 ">{result.title}</div>
                 </div>
@@ -126,9 +139,23 @@ const Home: NextPage = () => {
             </div>
           </div>
         </div>
+        {/* Video player */}
+        <YouTube
+          className="video-container  w-11/12 md:w-1/2"
+          videoId="2g811Eo7K8U"
+          opts={{
+            height: "390",
+            width: "640",
+            playerVars: {
+              // https://developers.google.com/youtube/player_parameters
+              autoplay: 1,
+            },
+          }}
+          onReady={onPlayerReady}
+        />
       </main>
 
-      <footer className="flex h-18 w-full items-center justify-center border-t">
+      <footer className="flex h-18 mt-8 w-full items-center justify-center border-t">
         <a
           className="flex items-center justify-center gap-2"
           href="https://www.buymeacoffee.com/danielrobertson"

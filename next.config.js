@@ -11,7 +11,7 @@ module.exports = {
     return config;
   },
   images: {
-    domains: ["i.ytimg.com"],
+    domains: ["i.ytimg.com", "yt3.ggpht.com"],
   },
   experimental: { images: { allowFutureImage: true } },
 };
