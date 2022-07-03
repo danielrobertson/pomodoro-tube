@@ -9,11 +9,11 @@ import { YouTubeSearchResults } from "youtube-search";
 import Search from "../components/search.svg";
 import useDebounce from "../hooks/useDebounce";
 
+const DEBOUNCE_TIMEOUT = 500; // ms
+const DEFAULT_VIDEO_ID = "5qap5aO4i9A";
 enum API_ROUTES {
   SEARCH_YOUTUBE = "/api/search-youtube",
 }
-
-const DEBOUNCE_TIMEOUT = 500; // ms
 
 const Home: NextPage = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -139,10 +139,11 @@ const Home: NextPage = () => {
             </div>
           </div>
         </div>
+
         {/* Video player */}
         <YouTube
           className="video-container  w-11/12 md:w-1/2"
-          videoId="2g811Eo7K8U"
+          videoId={currentVideo?.id || DEFAULT_VIDEO_ID}
           opts={{
             height: "390",
             width: "640",
