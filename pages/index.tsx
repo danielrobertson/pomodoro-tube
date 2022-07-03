@@ -3,6 +3,8 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/future/image";
 
+import { YouTubeSearchResults } from "youtube-search";
+
 import Search from "../components/search.svg";
 import useDebounce from "../hooks/useDebounce";
 
@@ -10,13 +12,16 @@ enum API_ROUTES {
   SEARCH_YOUTUBE = "/api/search-youtube",
 }
 
-const DEBOUNCE_TIMEOUT = 300; // ms
+const DEBOUNCE_TIMEOUT = 500; // ms
 
 const Home: NextPage = () => {
   const [searchValue, setSearchValue] = useState("");
-  const [youtubeResults, setYoutubeResults] = useState([]);
-  const debouncedSearchValue = useDebounce(searchValue, DEBOUNCE_TIMEOUT);
+  const [currentVideo, setCurrentVideo] = useState<YouTubeSearchResults>();
+  const [youtubeResults, setYoutubeResults] = useState<YouTubeSearchResults[]>(
+    []
+  );
 
+  const debouncedSearchValue = useDebounce(searchValue, DEBOUNCE_TIMEOUT);
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setSearchValue(e.target.value);
 
@@ -49,6 +54,16 @@ const Home: NextPage = () => {
     };
   }, [debouncedSearchValue]);
 
+  const handleYoutubeResultClick = (
+    youtubeSearchResult: YouTubeSearchResults
+  ) => {
+    setCurrentVideo(youtubeSearchResult);
+    setSearchValue("");
+    setYoutubeResults([]);
+
+    // TODO retain search history results for quick switches?
+  };
+
   return (
     <div className="flex min-h-screen flex-col items-center py-2">
       <Head>
@@ -78,7 +93,7 @@ const Home: NextPage = () => {
             </button>
           </div>
 
-          <div className="w-full h-96 mt-6 ml-2 rounded-xl border p-6 text-left flex flex-col overflow-y-scroll">
+          <div className="w-full h-96 mt-6 ml-2 rounded-xl border p-6 text-left flex flex-col">
             <div className="mt-1 relative rounded-md shadow-sm">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <Search className="h-5 w-5 fill-gray-500" />
@@ -91,12 +106,16 @@ const Home: NextPage = () => {
                 value={searchValue}
               />
             </div>
-            <div className="mt-3">
-              {youtubeResults.map((result: any) => (
-                <div className="flex mb-3" id={result.id}>
+            <div className="mt-3 overflow-y-scroll">
+              {youtubeResults.map((result) => (
+                <div
+                  className="flex items-center mb-3 rounded border border-gray-200 overflow-hidden shadow-sm cursor-pointer"
+                  id={result.id}
+                  onClick={() => handleYoutubeResultClick(result)}
+                >
                   <Image
                     className="flex-shrink-0"
-                    src={result.thumbnails?.default.url}
+                    src={result?.thumbnails?.default?.url}
                     alt="YouTube video thumbnail"
                     width={70}
                     height={50}

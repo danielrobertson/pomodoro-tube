@@ -1,14 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import youtubeSearch from "youtube-search";
+import youtubeSearch, { YouTubeSearchResults } from "youtube-search";
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default async (
+  req: NextApiRequest,
+  res: NextApiResponse<YouTubeSearchResults[]>
+) => {
   const searchValue =
     typeof req.query.search === "string" ? req.query.search : "";
 
   if (!searchValue) {
-    return res.status(400).json({
-      error: "No search value provided",
-    });
+    console.error("No search value");
+    return res.status(400).json([]);
   }
 
   try {
@@ -19,8 +21,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     res.status(200).json(youtubeVideos);
   } catch (err) {
-    return res.status(500).json({
-      error: err,
-    });
+    console.error(err);
+    return res.status(500).json([]);
   }
 };
