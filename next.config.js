@@ -10,4 +10,8 @@ module.exports = {
 
     return config;
   },
+  images: {
+    domains: ["i.ytimg.com"],
+  },
+  experimental: { images: { allowFutureImage: true } },
 };

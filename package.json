@@ -8,7 +8,8 @@
   "dependencies": {
     "next": "latest",
     "react": "18.1.0",
-    "react-dom": "18.1.0"
+    "react-dom": "18.1.0",
+    "youtube-search": "^1.1.6"
   },
   "devDependencies": {
     "@svgr/webpack": "^6.2.1",
