@@ -16,6 +16,7 @@ export default async (
   try {
     const { results: youtubeVideos } = await youtubeSearch(searchValue, {
       maxResults: 10,
+      type: "video", // https://developers.google.com/youtube/v3/docs/search/list
       key: process.env.YOUTUBE_API_KEY,
     });
 

@@ -60,13 +60,11 @@ const Home: NextPage = () => {
   const handleYoutubeResultClick = (video: YouTubeSearchResults) => {
     // TODO retain search history results for quick switches?
     setCurrentVideo(video);
-    setSearchValue("");
-    setYoutubeResults([]);
   };
 
-  const onPlayerReady: YouTubeProps["onReady"] = (event) => {
-    // access to player in all event handlers via event.target
-    event.target.pauseVideo();
+  const onPlayerReady: YouTubeProps["onEnd"] = (event) => {
+    // TODO onPlayerEnd restart video
+    // event.target.playVideo();
   };
 
   return (
@@ -118,12 +116,15 @@ const Home: NextPage = () => {
             <div className="mt-3 overflow-y-scroll">
               {youtubeResults.map((result) => (
                 <div
-                  className="flex items-center mb-3 mr-3 rounded border border-gray-200 overflow-hidden shadow-sm cursor-pointer"
+                  className="flex items-center mb-3 mr-3 rounded border border-gray-200 overflow-hidden shadow-sm cursor-pointer active:border-indigo-500"
                   id={result.id}
                   onClick={() => handleYoutubeResultClick(result)}
                 >
                   <Image
-                    className="flex-shrink-0"
+                    className="flex-shrink-0 w-auto h-auto"
+                    onError={() => {
+                      console.error("Error loading image");
+                    }}
                     src={
                       result?.thumbnails?.default?.url ||
                       "./thumnail-default.png"
