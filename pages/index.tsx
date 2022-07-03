@@ -1,86 +1,70 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
+import type { NextPage } from "next";
+import Head from "next/head";
+import Image from "next/image";
+import Search from "../components/search.svg";
 
 const Home: NextPage = () => {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-2">
+    <div className="flex min-h-screen flex-col items-center py-2">
       <Head>
-        <title>Create Next App</title>
+        <title>PomodoroTube</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
+      <main className="flex w-full flex-1 flex-col items-center text-center">
+        <h1 className="text-6xl font-bold pt-14">PomodoroTube</h1>
 
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="rounded-md bg-gray-100 p-3 font-mono text-lg">
-            pages/index.tsx
-          </code>
+        <p className="mt-3 text-xl">
+          Customized your Pomodoro soundtrack with YouTube videos
         </p>
 
-        <div className="mt-6 flex max-w-4xl flex-wrap items-center justify-around sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and its API.
-            </p>
-          </a>
+        <div className="container my-6 flex items-stretch justify-center">
+          <div className="w-full mt-6 mr-2 rounded-xl border p-6 text-left flex flex-col justify-center">
+            <div className="flex gap-3 justify-center flex-wrap">
+              <div className="text-lg font-semibold bg-gray-200 px-2 rounded-md">
+                Pomodoro
+              </div>
+              <div className="text-lg font-semibold">Short Break</div>
+              <div className="text-lg font-semibold">Long Break</div>
+            </div>
+            <h2 className="mt-4 text-8xl text-center py-5">25:00</h2>
+            <button className="mx-auto mt-4 bg-indigo-500 hover:bg-indigo-400 text-white text-2xl uppercase font-bold px-10 py-3 rounded-lg shadow-2xl">
+              Start
+            </button>
+          </div>
 
-          <a
-            href="https://nextjs.org/learn"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+          <div className="w-full mt-6 ml-2 rounded-xl border p-6 text-left flex flex-col">
+            <div className="mt-1 relative rounded-md shadow-sm">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Search className="h-5 w-5 fill-gray-500 " />
+              </div>
+              <input
+                type="text"
+                className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-12 py-3 border border-gray-300 rounded-md placeholder:text-gray-500"
+                placeholder="Search YouTube e.g. lofi chill"
+              />
+            </div>
+          </div>
         </div>
       </main>
 
-      <footer className="flex h-24 w-full items-center justify-center border-t">
+      <footer className="flex h-18 w-full items-center justify-center border-t">
         <a
           className="flex items-center justify-center gap-2"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+          href="https://www.buymeacoffee.com/danielrobertson"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
-          <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
+          <Image
+            src="/buy-coffee.png"
+            alt="Buy me a coffee"
+            width={200}
+            height={48}
+          />
         </a>
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
