@@ -1,6 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import youtubeSearch, { YouTubeSearchResults } from "youtube-search";
 
+const LIMIT = 10; // Max number of results to return
+
 export default async (
   req: NextApiRequest,
   res: NextApiResponse<YouTubeSearchResults[]>
@@ -15,7 +17,7 @@ export default async (
 
   try {
     const { results: youtubeVideos } = await youtubeSearch(searchValue, {
-      maxResults: 10,
+      maxResults: LIMIT,
       type: "video", // https://developers.google.com/youtube/v3/docs/search/list
       key: process.env.YOUTUBE_API_KEY,
     });

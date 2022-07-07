@@ -1,61 +1,16 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/future/image";
 import YouTube, { YouTubeProps } from "react-youtube";
-
 import { YouTubeSearchResults } from "youtube-search";
 
-import Search from "../components/search.svg";
-import useDebounce from "../hooks/useDebounce";
+import YoutubeSearch from "../components/YoutubeSearch";
 
-const DEBOUNCE_TIMEOUT = 500; // ms
 const DEFAULT_VIDEO_ID = "5qap5aO4i9A";
-enum API_ROUTES {
-  SEARCH_YOUTUBE = "/api/search-youtube",
-}
 
 const Home: NextPage = () => {
-  const [searchValue, setSearchValue] = useState("");
   const [currentVideo, setCurrentVideo] = useState<YouTubeSearchResults>();
-  const [youtubeResults, setYoutubeResults] = useState<YouTubeSearchResults[]>(
-    []
-  );
-
-  const debouncedSearchValue = useDebounce(searchValue, DEBOUNCE_TIMEOUT);
-
-  useEffect(() => {
-    // Fetch YouTube search results
-    const abortController = new AbortController();
-
-    // TODO implement caching on YouTube search results
-    const fetchYoutubeData = async () => {
-      const youtubeResponse = await fetch(
-        `${API_ROUTES.SEARCH_YOUTUBE}?search=${debouncedSearchValue}`,
-        { signal: abortController.signal }
-      );
-
-      if (!youtubeResponse.ok) {
-        console.error(`YouTube API error: ${youtubeResponse.status}`);
-      }
-
-      const youtubeResults = await youtubeResponse.json();
-      setYoutubeResults(youtubeResults);
-    };
-
-    if (debouncedSearchValue.length > 0) {
-      fetchYoutubeData();
-    } else {
-      setYoutubeResults([]);
-    }
-
-    return () => {
-      abortController.abort();
-    };
-  }, [debouncedSearchValue]);
-
-  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setSearchValue(e.target.value);
 
   const handleYoutubeResultClick = (video: YouTubeSearchResults) => {
     // TODO retain search history results for quick switches?
@@ -93,52 +48,17 @@ const Home: NextPage = () => {
               <div className="text-lg font-semibold">Short Break</div>
               <div className="text-lg font-semibold">Long Break</div>
             </div>
+
             <h2 className="mt-4 text-8xl text-center py-5">25:00</h2>
             <button className="mx-auto mt-4 bg-indigo-500 hover:bg-indigo-400 text-white text-2xl uppercase font-bold px-10 py-3 rounded-lg shadow-2xl">
               Start
             </button>
           </div>
 
-          {/* Search panel */}
-          <div className="w-full h-96 mt-6 md:ml-2 rounded-xl border p-6 text-left flex flex-col">
-            <div className="mt-1 relative rounded-md shadow-sm">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 fill-gray-500" />
-              </div>
-              <input
-                type="text"
-                className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-12 py-3 border border-gray-300 rounded-md placeholder:text-gray-500"
-                placeholder="Search YouTube e.g. lofi chill"
-                onChange={handleSearchInputChange}
-                value={searchValue}
-              />
-            </div>
-            <div className="mt-3 overflow-y-scroll">
-              {youtubeResults.map((result) => (
-                <div
-                  className="flex items-center mb-3 mr-3 rounded border border-gray-200 overflow-hidden shadow-sm cursor-pointer active:border-indigo-500"
-                  id={result.id}
-                  onClick={() => handleYoutubeResultClick(result)}
-                >
-                  <Image
-                    className="flex-shrink-0 w-auto h-auto"
-                    onError={() => {
-                      console.error("Error loading image");
-                    }}
-                    src={
-                      result?.thumbnails?.default?.url ||
-                      "./thumnail-default.png"
-                    }
-                    alt="YouTube video thumbnail"
-                    width={70}
-                    height={50}
-                    // TODO implement loading blur
-                  />
-                  <div className="ml-3 ">{result.title}</div>
-                </div>
-              ))}
-            </div>
-          </div>
+          <YoutubeSearch
+            className="mt-6 md:ml-2"
+            handleYoutubeResultClick={handleYoutubeResultClick}
+          />
         </div>
 
         {/* Video player */}
@@ -146,7 +66,7 @@ const Home: NextPage = () => {
           className="video-container  w-11/12 md:w-1/2"
           videoId={currentVideo?.id || DEFAULT_VIDEO_ID}
           opts={{
-            height: "390",
+            height: "390", // px
             width: "640",
             playerVars: {
               // https://developers.google.com/youtube/player_parameters
