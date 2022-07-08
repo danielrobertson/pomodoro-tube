@@ -3,7 +3,7 @@ import { useTimer } from "use-timer";
 
 type Props = {};
 
-const POMODORO_SECONDS = 70;
+const POMODORO_SECONDS = 25 * 60;
 const SHORT_BREAK_SECONDS = 10;
 const LONG_BREAK_SECONDS = 20;
 

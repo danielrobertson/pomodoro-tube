@@ -30,12 +30,12 @@ const Home: NextPage = () => {
         <link rel="icon" href="/tv.ico" />
       </Head>
 
-      <main className="flex w-full flex-1 flex-col items-center text-center">
-        <h1 className="container text-5xl md:text-6xl font-bold pt-14">
+      <main className="flex w-full flex-1 flex-col items-center text-center px-2">
+        <h1 className="container text-5xl md:text-6xl font-bold pt-14 px-2">
           PomodoroTube
         </h1>
 
-        <p className="container mt-3 text-xl">
+        <p className="container mt-3 text-xl px-2">
           Customize your Pomodoro soundtrack with YouTube videos
         </p>
 
