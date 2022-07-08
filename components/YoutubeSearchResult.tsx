@@ -20,6 +20,10 @@ export const YoutubeSearchResult = ({
     video?.thumbnails?.default?.url || DEFAULT_IMG_URL
   );
 
+  const parser = new DOMParser();
+  const decodedTitle = parser.parseFromString(video.title, "text/html").body
+    .innerHTML;
+
   return (
     <div
       className={classnames(
@@ -37,7 +41,7 @@ export const YoutubeSearchResult = ({
         height={50}
         // TODO implement loading blur
       />
-      <div className="ml-3">{video.title}</div>
+      <div className="ml-3">{decodedTitle}</div>
     </div>
   );
 };
