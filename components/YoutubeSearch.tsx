@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import classnames from "classnames";
 
 import Search from "../components/search.svg";
+import { YoutubeSearchResult } from "./YoutubeSearchResult";
 import useDebounce from "../hooks/useDebounce";
 
-import { YouTubeSearchResults } from "youtube-search";
-import { YoutubeSearchResult } from "./YoutubeSearchResult";
+import type { YouTubeSearchResults } from "youtube-search";
 
 type Props = {
   className?: string;
@@ -68,7 +68,7 @@ export default function YoutubeSearch({
   );
 
   return (
-    <div className={classes}>
+    <section className={classes}>
       <div className="mt-1 relative rounded-md shadow-sm">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <Search className="h-5 w-5 fill-gray-500" />
@@ -91,6 +91,6 @@ export default function YoutubeSearch({
           />
         ))}
       </div>
-    </div>
+    </section>
   );
 }

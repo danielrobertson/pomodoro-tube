@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/future/image";
-import { YouTubeSearchResults } from "youtube-search";
 import classnames from "classnames";
+import type { YouTubeSearchResults } from "youtube-search";
 
 const DEFAULT_IMG_URL = "/thumbnail-default.png";
 

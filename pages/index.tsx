@@ -3,9 +3,10 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/future/image";
 import YouTube, { YouTubeProps } from "react-youtube";
-import { YouTubeSearchResults } from "youtube-search";
+import type { YouTubeSearchResults } from "youtube-search";
 
 import YoutubeSearch from "../components/YoutubeSearch";
+import Timer from "../components/Timer";
 
 const DEFAULT_VIDEO_ID = "5qap5aO4i9A";
 
@@ -35,26 +36,11 @@ const Home: NextPage = () => {
         </h1>
 
         <p className="container mt-3 text-xl">
-          Customized your Pomodoro soundtrack with YouTube videos
+          Customize your Pomodoro soundtrack with YouTube videos
         </p>
 
         <div className="container p-2 my-6 flex flex-col md:flex-row items-stretch justify-center">
-          {/* Pomodoro panel */}
-          <div className="w-full mt-6 md:mr-2 rounded-xl border p-6 text-left flex flex-col justify-between">
-            <div className="flex gap-3 justify-center flex-wrap">
-              <div className="text-lg font-semibold bg-gray-200 px-2 rounded-md">
-                Pomodoro
-              </div>
-              <div className="text-lg font-semibold">Short Break</div>
-              <div className="text-lg font-semibold">Long Break</div>
-            </div>
-
-            <h2 className="mt-4 text-8xl text-center py-5">25:00</h2>
-            <button className="mx-auto mt-4 bg-indigo-500 hover:bg-indigo-400 text-white text-2xl uppercase font-bold px-10 py-3 rounded-lg shadow-2xl">
-              Start
-            </button>
-          </div>
-
+          <Timer />
           <YoutubeSearch
             className="mt-6 md:ml-2"
             handleYoutubeResultClick={handleYoutubeResultClick}
@@ -63,7 +49,7 @@ const Home: NextPage = () => {
 
         {/* Video player */}
         <YouTube
-          className="video-container  w-11/12 md:w-1/2"
+          className="video-container w-11/12 md:w-1/2"
           videoId={currentVideo?.id || DEFAULT_VIDEO_ID}
           opts={{
             height: "390", // px
