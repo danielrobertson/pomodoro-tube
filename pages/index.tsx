@@ -8,7 +8,7 @@ import type { YouTubeSearchResults } from "youtube-search";
 import YoutubeSearch from "../components/YoutubeSearch";
 import Timer from "../components/Timer";
 
-const DEFAULT_VIDEO_ID = "5qap5aO4i9A";
+const DEFAULT_VIDEO_ID = "jfKfPfyJRdk";
 
 const Home: NextPage = () => {
   const [currentVideo, setCurrentVideo] = useState<YouTubeSearchResults>();
